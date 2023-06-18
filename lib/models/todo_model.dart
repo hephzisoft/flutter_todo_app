@@ -4,7 +4,7 @@ class Todo {
   final String id;
   final String task;
   final DateTime dateAdded;
-  final bool isCompleted;
+  bool isCompleted;
 
   Todo({
     required this.id,

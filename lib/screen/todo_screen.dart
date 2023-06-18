@@ -55,6 +55,18 @@ class _TodoScreenState extends State<TodoScreen> {
     });
   }
 
+  _completedTask(int index) {
+    setState(() {
+      _allTaskList[index].isCompleted = !_allTaskList[index].isCompleted;
+    });
+
+    if (_allTaskList[index].isCompleted) {
+      setState(() {
+        _allTaskList.removeWhere((task) => task.id == _allTaskList[index].id);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +128,18 @@ class _TodoScreenState extends State<TodoScreen> {
             )
           : ListView.builder(
               itemBuilder: (context, index) {
-                return ListTile(title: Text(_allTaskList[index].task));
+                return Card(
+                  elevation: 5,
+                  child: ListTile(
+                    title: Text(_allTaskList[index].task),
+                    trailing: GestureDetector(
+                      child: _allTaskList[index].isCompleted == false
+                          ? const Icon(Icons.check_box_outline_blank)
+                          : const Icon(Icons.check_box),
+                      onTap: () => _completedTask(index),
+                    ),
+                  ),
+                );
               },
               itemCount: _allTaskList.length,
             ),
