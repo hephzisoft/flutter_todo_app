@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/add_todo.dart';
@@ -59,12 +61,15 @@ class _TodoScreenState extends State<TodoScreen> {
   _completedTask(int index) {
     setState(() {
       _allTaskList[index].isCompleted = !_allTaskList[index].isCompleted;
-      _deleteTask(index);
     });
 
     if (_allTaskList[index].isCompleted) {
-      _finishedTask.add(_allTaskList[index]);
+      // _finishedTask.add(_allTaskList[index]);
+      if (!_finishedTask.contains(_allTaskList[index])) {
+        _finishedTask.add(_allTaskList[index]);
+      }
     }
+    _deleteTask(index);
   }
 
   _deleteTask(int index) {

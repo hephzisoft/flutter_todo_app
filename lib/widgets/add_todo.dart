@@ -26,9 +26,13 @@ class AddTask extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text('Add Task'),
+          Text(
+            'Add Task',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           TextField(
             controller: taskController,
+            onSubmitted: (_) => verifyHandler,
             decoration: const InputDecoration(
               hintText: 'Task',
               helperText: 'The task to be done should be added here',

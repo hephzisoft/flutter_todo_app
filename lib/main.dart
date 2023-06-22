@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'screen/todo_screen.dart';
 
@@ -13,8 +14,12 @@ class MyApp extends StatelessWidget {
       home: const TodoScreen(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFF139CE3),
-      ),
+          primaryColor: const Color(0xFF139CE3),
+          textTheme: TextTheme(
+              titleMedium: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ))),
     );
   }
 }
