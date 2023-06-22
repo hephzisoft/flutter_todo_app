@@ -12,7 +12,7 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   final _allTaskList = Todo.allTask;
-  final _generateId = Todo.generateId();
+  
 
   String? greetingText;
 
@@ -46,7 +46,7 @@ class _TodoScreenState extends State<TodoScreen> {
 
   _createNewTask(String task) {
     final newTask = Todo(
-        id: _generateId,
+        id: Todo.generateId(),
         task: task,
         dateAdded: DateTime.now(),
         isCompleted: false);
@@ -130,13 +130,21 @@ class _TodoScreenState extends State<TodoScreen> {
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 5,
+                  margin: const EdgeInsets.only(top: 10),
                   child: ListTile(
-                    title: Text(_allTaskList[index].task),
-                    trailing: GestureDetector(
-                      child: _allTaskList[index].isCompleted == false
+                    leading: IconButton(
+                      icon: !_allTaskList[index].isCompleted
                           ? const Icon(Icons.check_box_outline_blank)
                           : const Icon(Icons.check_box),
-                      onTap: () => _completedTask(index),
+                      onPressed: () => _completedTask(index),
+                    ),
+                    title: Text(_allTaskList[index].task),
+                    trailing: IconButton(
+                      icon: const Icon(CupertinoIcons.delete),
+                      color: Theme.of(context).colorScheme.error,
+                      onPressed: () {
+                        print(_allTaskList[index].id);
+                      },
                     ),
                   ),
                 );
