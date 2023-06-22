@@ -43,4 +43,6 @@ class Todo {
     var uuid = const Uuid();
     return uuid.v4();
   }
+
+  static List<Todo> finishedTask = [];
 }

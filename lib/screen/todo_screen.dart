@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/add_todo.dart';
 import '../models/todo_model.dart';
+import '../widgets/completed_task.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -12,7 +13,7 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   final _allTaskList = Todo.allTask;
-  
+  final _finishedTask = Todo.finishedTask;
 
   String? greetingText;
 
@@ -58,13 +59,26 @@ class _TodoScreenState extends State<TodoScreen> {
   _completedTask(int index) {
     setState(() {
       _allTaskList[index].isCompleted = !_allTaskList[index].isCompleted;
+      _deleteTask(index);
     });
 
     if (_allTaskList[index].isCompleted) {
-      setState(() {
-        _allTaskList.removeWhere((task) => task.id == _allTaskList[index].id);
-      });
+      _finishedTask.add(_allTaskList[index]);
     }
+  }
+
+  _deleteTask(int index) {
+    setState(() {
+      _allTaskList.removeWhere((task) => task.id == _allTaskList[index].id);
+    });
+  }
+
+  _showCompletedTask() {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return CompletedTask(_finishedTask);
+        });
   }
 
   @override
@@ -85,18 +99,18 @@ class _TodoScreenState extends State<TodoScreen> {
           Stack(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: _showCompletedTask,
                 icon: const Icon(CupertinoIcons.bell_fill),
               ),
-              const Positioned(
+              Positioned(
                 top: 1,
                 right: 0,
                 child: CircleAvatar(
                   backgroundColor: Colors.red,
                   radius: 13,
                   child: Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Text('10'),
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(_finishedTask.length.toString()),
                   ),
                 ),
               ),
@@ -142,9 +156,7 @@ class _TodoScreenState extends State<TodoScreen> {
                     trailing: IconButton(
                       icon: const Icon(CupertinoIcons.delete),
                       color: Theme.of(context).colorScheme.error,
-                      onPressed: () {
-                        print(_allTaskList[index].id);
-                      },
+                      onPressed: () => _deleteTask(index),
                     ),
                   ),
                 );
